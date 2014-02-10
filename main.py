@@ -11,6 +11,7 @@ if not os.path.exists(path):
 
 
 cmdline = ["rsync", "--temp-dir="+path, url]
+
 proc = subprocess.Popen(cmdline, stdout=subprocess.PIPE)
 
 for line in proc.stdout:
