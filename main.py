@@ -1,4 +1,3 @@
-import subprocess
 from FSWalker import FSWalker
 from RSyncWalker import *
 
@@ -21,12 +20,8 @@ basicDirectories = read_rootdir_walker(w)
 #remove unused (yet) repos
 basicDirectories = [d for d in basicDirectories if d in allowedRepos]
 
-print (basicDirectories)
-
-# for d in basicDirectories:
-# 	recursive_walk_directory(url+d)
-# 	fsw.goDown(d)
-# 	print (fsw.getPath())
-# 	fsw.goUp()
+#for d in basicDirectories:
+#	recursive_walk_directory(url+d)
 
 recursive_walk_directory(url+basicDirectories[1])
+

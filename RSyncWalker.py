@@ -1,17 +1,15 @@
 import subprocess
-from ExInc import EIList
+
 
 def walker(url):
 	p = subprocess.Popen(['rsync',url], stdout=subprocess.PIPE)
 	return p
 
 def recursive_walker(url):
-	eil = EIList()
-	cmd = ['rsync','-r',url]
-	for i in eil.formatIncludes():
-		cmd.append(i)
-	for i in eil.formatExcludes():
-		cmd.append(i)
+	cmd = ['rsync','-r']
+	cmd.append('--include-from=.includes')
+	cmd.append('--exclude-from=.excludes')
+	cmd.append(url)
 	p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
 	return p
 
@@ -27,15 +25,19 @@ def read_rootdir_walker(walker):
 	return directories
 
 def read_contents(walker): #for recursive walker
+	f = open('hello', 'w')
 	for line in walker.stdout:
 		item = line.strip().split(None,2)[-1].decode("utf-8")
 		print (item)
+		if (item.endswith('.img') or (item.endswith('.iso') or (item.endswith('vmlinuz')))):
+			f.write(item)
+
+
 
 
 
 def recursive_walk_directory(basicDir):
 	w = recursive_walker(basicDir)
-	print("Current directory on server:",basicDir)
 	read_contents(w)
 
 

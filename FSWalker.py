@@ -25,3 +25,4 @@ class FSWalker:
 
 	def getPath(self):
 		return self.path
+		

@@ -1,3 +1,7 @@
-linux
-russianfedora
-*.img
+*/
+pxeboot/initrd.img
+pxeboot/vmlinuz
+
+
+
+
