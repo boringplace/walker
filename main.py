@@ -1,39 +1,32 @@
 import subprocess
-import os
-
 from FSWalker import FSWalker
+from RSyncWalker import *
 
 path = 'tmp'
 url = 'rsync://mirror.yandex.ru/'
-allowedRepos = ['fedora']
+#url = 'rsync://mirrors.kernel.org/mirrors/'
+
+allowedRepos = ['centos','fedora']
 
 #creating worksapce
 fsw = FSWalker(path)
 fsw.createTmpCatalog()
 
-#waiting for its own class
-cmdline = ["rsync", "--temp-dir="+path, url]
+#encapsulate rsync methods
+w = walker(url)
 
-proc = subprocess.Popen(cmdline, stdout=subprocess.PIPE)
+#get main tree (usually doesn't work correcly with recursive rsync)
+basicDirectories = read_rootdir_walker(w)
 
-for line in proc.stdout:
-	try:
-		items = line.strip().split(None, 2)
-		item = items[0].decode("utf-8")
-		if item in allowedRepos:
-			fsw.createCatalog(item)
-			fsw.goUp()
-	except IndexError:
-		pass
+#remove unused (yet) repos
+basicDirectories = [d for d in basicDirectories if d in allowedRepos]
 
-for item in allowedRepos:
-	fsw.goDown(item)
-	inner_url = url + item
-	cmd = ["rsync", "--temp-dir="+fsw.getPath(), inner_url]
-	aproc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-	for line in aproc.stdout:
-		items = line.strip().split(None, 2)
-		# print (items)
-		item = items[-1].decode("utf-8").rsplit(' ',1)[-1]
-		print (item)
-	print ("--------")
+print (basicDirectories)
+
+# for d in basicDirectories:
+# 	recursive_walk_directory(url+d)
+# 	fsw.goDown(d)
+# 	print (fsw.getPath())
+# 	fsw.goUp()
+
+recursive_walk_directory(url+basicDirectories[1])
