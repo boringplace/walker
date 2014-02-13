@@ -1,5 +1,5 @@
 import os
-from templates.centos import *
+from ConfigSupplier import *
 #convert from repositories folder to apropriate names
 distro_proper_name = {'centos': 'CentOS', 'rhel': 'RHEL', 'fedora': 'Fedora'}
 
@@ -15,7 +15,7 @@ mainmenu = """DEFAULT vesamenu.c32
 					This will exit from the network boot menu and attempt
 					to boot from local media (hard disk, DVD, etc)
 				ENDTEXT
-				localboot 0x80
+				localboot 0x80\n
 """
 
 #menu of distributives
@@ -25,9 +25,18 @@ MENU LABEL ^Install available %s distributions
 
 TEXT HELP
 	Install available %s distributions
-ENDTEXT
+ENDTEXT\n
 """
 
+distromenu_value = """label %s-%s-%s
+	MENU LABEL %s-%s-%s
+	kernel %s
+	initrd %s
+	APPEND %s
+        TEXT HELP
+             Selecting this will boot the %s %s %s installer.
+        ENDTEXT\n
+"""
 distromenu_footer = """"
 label uplvl
         MENU LABEL Back
@@ -36,19 +45,6 @@ label uplvl
 label spacer
         MENU LABEL
 """     
-
-#create empy config file
-def create_config_file(name,currentDirectory):
-	f = open(currentDirectory+'/'+name,'a')
-	return f
-
-#fill it
-def generate_config(f,vmlinuzPath, initrdPath):
-	f.write("kernel "+vmlinuzPath+"\n")
-	f.write("initrd "+initrdPath+"\n")
-	f.write("APPEND repo="+vmlinuzPath.split('images')[0]+"\n")
-	f.write("\n")
-
 #create PXE config file for main menu
 def generate_main_config(availableDistros):
 	f = open(os.getcwd()+'/walkresult/default','a')
@@ -56,14 +52,20 @@ def generate_main_config(availableDistros):
 	
 	for line in availableDistros:
 		f.write("menu include pxelinux.cfg/%s.conf Install %s\n" % (line, distro_proper_name[line]))
+	f.close()
 
 
 #create PXE config file for distribution
 def create_distro_config(distr):
 	f = open(os.getcwd()+'/walkresult/'+distr+'.conf','a')
 	f.write(distromenu_header %(distro_proper_name[distr], distro_proper_name[distr], distro_proper_name[distr]))
+	return f
 
 #fill eaach initrd/vmlinuz/repo stuff
-def generate_distro_config(f,vmlinuzPath, initrdPath):
-	
+def fill_distro_config(f, distr, vmlinuzPath, initrdPath):
+	info = distroInfo(distr, vmlinuzPath)
+	f.write(distromenu_value %( distro_proper_name[distr], info[0], info[1],
+								distro_proper_name[distr], info[0], info[1],
+								vmlinuzPath, initrdPath, info[2],
+								distro_proper_name[distr], info[0], info[1]))
 

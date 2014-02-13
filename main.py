@@ -7,11 +7,10 @@ path = 'tmp'
 url = 'rsync://mirror.yandex.ru/'
 #url = 'rsync://mirrors.kernel.org/mirrors/'
 
-allowedRepos = ['centos', 'fedora']
+allowedRepos = ['centos']
 
 #creating worksapce
 fsw = FSWalker(path)
-fsw.create_tmp_catalog()
 
 #encapsulate rsync methods
 w = walker(url)
@@ -27,21 +26,17 @@ fsw.go_up()
 fsw.create_catalog('walkresult')
 generate_main_config(allowedRepos)
 
-generate_distro_config(allowedRepos[0]);
-fsw.go_up()
 
-fsw.go_down('tmp')
 urlForConfig= exists(url)
 if (urlForConfig!=False):
 	for d in basicDirectories:
-		fsw.create_catalog(d)
-
 		res = recursive_walk_directory(url+d)
 		i=0
+		f = create_distro_config(d)
 		while(i<len(res)): #iterate with step  == 2 to pick up initrd and vmlinuz
-			tmpInitrd = urlForConfig+d+'/'+res[i];
-			tmpVmlinuz = urlForConfig+d+'/'+res[i+1];
+			initrd = urlForConfig+d+'/'+res[i];
+			vmlinuz = urlForConfig+d+'/'+res[i+1];
+			fill_distro_config(f, d, vmlinuz, initrd)
 			i += 2
-			f = create_config_file(d, fsw.get_path())
-			generate_config(f, tmpInitrd, tmpVmlinuz)
-		fsw.go_up()
+
+print ("Results are stored in: "+os.getcwd()+"/walkresult/")
