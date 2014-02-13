@@ -25,20 +25,17 @@ def read_rootdir_walker(walker):
 	return directories
 
 def read_contents(walker): #for recursive walker
-	f = open('hello', 'w')
+	result = []
+	
 	for line in walker.stdout:
 		item = line.strip().split(None,2)[-1].decode("utf-8")
-		print (item)
-		if (item.endswith('.img') or (item.endswith('.iso') or (item.endswith('vmlinuz')))):
-			f.write(item)
-
-
-
-
+		if (item.endswith('.img') or item.endswith('vmlinuz')):
+ 			result.append(item.split(' ')[-1])
+	return result
 
 def recursive_walk_directory(basicDir):
 	w = recursive_walker(basicDir)
-	read_contents(w)
+	return read_contents(w)
 
 
 

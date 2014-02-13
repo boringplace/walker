@@ -1,28 +1,27 @@
 import os
+
 class FSWalker:
 	global path
 	path = "./"
 
 	def __init__(self, tempdir):
 		self.path = path + tempdir
-		self.createTmpCatalog
 			
-	def goDown(self,cat):	
+	def go_down(self,cat):	
 		self.path += '/'+cat
 	
-	def goUp(self):
+	def go_up(self):
 		self.path = self.path.rsplit('/', 1)[0]
 
-	def createTmpCatalog(self):
+	def create_tmp_catalog(self):
 		if not os.path.exists(self.path):
 			os.mkdir(self.path)
 
-	def createCatalog(self,cat):
+	def create_catalog(self,cat):
 		global path
-		self.goDown(cat)
+		self.go_down(cat)
 		if not os.path.exists(self.path):
 			os.mkdir(self.path)	
 
-	def getPath(self):
+	def get_path(self):
 		return self.path
-		
