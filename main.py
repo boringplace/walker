@@ -4,10 +4,10 @@ from CheckExists import exists
 from ConfigWorker import *
 
 path = 'tmp'
-url = 'rsync://mirror.yandex.ru/'
+#url = 'rsync://mirror.yandex.ru/'
 #url = 'rsync://mirrors.kernel.org/mirrors/'
-
-allowedRepos = ['centos']
+url = 'rsync://mirrors.sgu.ru/'
+allowedRepos = ['centos', 'fedora']
 
 #creating worksapce
 fsw = FSWalker(path)
@@ -38,5 +38,6 @@ if (urlForConfig!=False):
 			vmlinuz = urlForConfig+d+'/'+res[i+1];
 			fill_distro_config(f, d, vmlinuz, initrd)
 			i += 2
+		foot_distro_config(f)
 
 print ("Results are stored in: "+os.getcwd()+"/walkresult/")

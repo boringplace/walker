@@ -19,6 +19,7 @@ def read_rootdir_walker(walker):
 		try:
 			items = line.strip().split(None, 2)
 			item = items[0].decode("utf-8")
+			
 			directories.append(item)
 		except IndexError:
 			pass
