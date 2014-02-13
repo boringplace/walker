@@ -1,6 +1,5 @@
 import subprocess
 
-
 def walker(url):
 	p = subprocess.Popen(['rsync',url], stdout=subprocess.PIPE)
 	return p
@@ -19,7 +18,7 @@ def read_rootdir_walker(walker):
 		try:
 			items = line.strip().split(None, 2)
 			item = items[0].decode("utf-8")
-			
+
 			directories.append(item)
 		except IndexError:
 			pass

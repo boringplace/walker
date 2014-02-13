@@ -1,4 +1,5 @@
-from FSWalker import FSWalker
+import glob 
+
 from RSyncWalker import *
 from CheckExists import exists
 from ConfigWorker import *
@@ -9,9 +10,6 @@ path = 'tmp'
 url = 'rsync://mirrors.sgu.ru/'
 allowedRepos = ['centos', 'fedora']
 
-#creating worksapce
-fsw = FSWalker(path)
-
 #encapsulate rsync methods
 w = walker(url)
 
@@ -21,9 +19,14 @@ basicDirectories = read_rootdir_walker(w)
 #remove unused (yet) repos
 basicDirectories = [d for d in basicDirectories if d in allowedRepos]
 
-fsw.go_up()
 
-fsw.create_catalog('walkresult')
+if not os.path.isdir('./walkresult'):
+	os.mkdir('walkresult')
+else:
+	for f in glob.glob("./walkresult/*"):
+		os.remove(f)#remove old walking confs to allow updates without 
+					#overwritiing
+
 generate_main_config(allowedRepos)
 
 
@@ -33,7 +36,7 @@ if (urlForConfig!=False):
 		res = recursive_walk_directory(url+d)
 		i=0
 		f = create_distro_config(d)
-		while(i<len(res)): #iterate with step  == 2 to pick up initrd and vmlinuz
+		while(i<len(res)): #iterate with step==2 to pick up initrd and vmlinuz
 			initrd = urlForConfig+d+'/'+res[i];
 			vmlinuz = urlForConfig+d+'/'+res[i+1];
 			fill_distro_config(f, d, vmlinuz, initrd)
