@@ -22,7 +22,15 @@ basicDirectories = read_rootdir_walker(w)
 #remove unused (yet) repos
 basicDirectories = [d for d in basicDirectories if d in allowedRepos]
 
+fsw.go_up()
 
+fsw.create_catalog('walkresult')
+generate_main_config(allowedRepos)
+
+generate_distro_config(allowedRepos[0]);
+fsw.go_up()
+
+fsw.go_down('tmp')
 urlForConfig= exists(url)
 if (urlForConfig!=False):
 	for d in basicDirectories:
@@ -35,5 +43,5 @@ if (urlForConfig!=False):
 			tmpVmlinuz = urlForConfig+d+'/'+res[i+1];
 			i += 2
 			f = create_config_file(d, fsw.get_path())
-			create_config(f, tmpInitrd, tmpVmlinuz)
+			generate_config(f, tmpInitrd, tmpVmlinuz)
 		fsw.go_up()
