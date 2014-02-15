@@ -29,7 +29,7 @@ def read_contents(walker): #for recursive walker
 	
 	for line in walker.stdout:
 		item = line.strip().split(None,2)[-1].decode("utf-8")
-		if (item.endswith('.img') or item.endswith('vmlinuz')):
+		if (item.endswith('.img') or item.endswith('initrd.gz') or item.endswith('vmlinuz')):
  			result.append(item.split(' ')[-1])
 	return result
 

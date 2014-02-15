@@ -1,46 +1,50 @@
-import glob 
-
+import shutil
+import os
 from RSyncWalker import *
 from CheckExists import exists
 from ConfigWorker import *
 
 path = 'tmp'
-#url = 'rsync://mirror.yandex.ru/'
+url = 'rsync://mirror.yandex.ru/'
 #url = 'rsync://mirrors.kernel.org/mirrors/'
-url = 'rsync://mirrors.sgu.ru/'
-allowedRepos = ['centos', 'fedora']
-
-#encapsulate rsync methods
-w = walker(url)
-
+#url = 'rsync://mirrors.sgu.ru/'
+allowedRepos = ['centos']
 #get main tree (usually doesn't work correcly with recursive rsync)
-basicDirectories = read_rootdir_walker(w)
-
+basicDirectories = read_rootdir_walker(walker(url))
 #remove unused (yet) repos
 basicDirectories = [d for d in basicDirectories if d in allowedRepos]
 
-
-if not os.path.isdir('./walkresult'):
-	os.mkdir('walkresult')
+if os.path.isdir('./pxeconf.d'):
+	shutil.rmtree('./pxeconf.d')	#remove old walking confs to allow updates without 
+									#overwritiing
 else:
-	for f in glob.glob("./walkresult/*"):
-		os.remove(f)#remove old walking confs to allow updates without 
-					#overwritiing
+	os.mkdir('./pxeconf.d')
 
-generate_main_config(allowedRepos)
+initDir = os.getcwd() #preserve to return back home
 
+
+#generate_main_config(allowedRepos)
 
 urlForConfig= exists(url)
+
 if (urlForConfig!=False):
 	for d in basicDirectories:
 		res = recursive_walk_directory(url+d)
 		i=0
-		f = create_distro_config(d)
+#		f = create_distro_config(d)
 		while(i<len(res)): #iterate with step==2 to pick up initrd and vmlinuz
 			initrd = urlForConfig+d+'/'+res[i];
 			vmlinuz = urlForConfig+d+'/'+res[i+1];
-			fill_distro_config(f, d, vmlinuz, initrd)
-			i += 2
-		foot_distro_config(f)
 
-print ("Results are stored in: "+os.getcwd()+"/walkresult/")
+			os.makedirs('pxeconf.d'+'/'+d+'/'+'/'.join(res[i].split('/')[:-1]))
+			i += 2
+			
+
+	generate_root_config('pxeconf.d')
+	for root, dirs, files in os.walk("pxeconf.d"):
+		print (root)
+		if root != 'pxeconf.d': #skip main menu
+	 		generate_submenu_config(root, initDir)
+
+else:
+	print ("Walker has no access to this mirror.")

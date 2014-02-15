@@ -1,4 +1,6 @@
 import os
+import os.path
+
 from ConfigSupplier import *
 
 #convert from repositories folder to apropriate names
@@ -38,42 +40,55 @@ distromenu_value = """label %s-%s-%s
              Selecting this will boot the %s %s %s installer.
         ENDTEXT\n
 """
-distromenu_footer = """label uplvl
+footer = """label uplvl
         MENU LABEL Back
         MENU EXIT
 
 label spacer
         MENU LABEL
 """     
-#create PXE config file for main menu
-def generate_main_config(availableDistros):
-	f = open(os.getcwd()+'/walkresult/default','a')
-	f.write(mainmenu)
-	
-	for line in availableDistros:
-		f.write("menu include pxelinux.cfg/%s.conf Install %s\n" % 
-			(line, distro_proper_name[line.lower()]))
-	f.close()
+
+submenu_header = """PROMPT 0
+MENU TITLE %s
+MENU LABEL ^%s
+
+TEXT HELP
+	%s 
+ENDTEXT
+"""
+
+submenu_value = "menu include %s/%s.conf %s\n"
 
 
 #create PXE config file for distribution
-def create_distro_config(distr):
-	f = open(os.getcwd()+'/walkresult/'+distr+'.conf','a')
-	f.write(distromenu_header %(distro_proper_name[distr.lower()], 
-								distro_proper_name[distr.lower()], 
-								distro_proper_name[distr.lower()]))
-	return f
 
 #fill eaach initrd/vmlinuz/repo stuff
-def fill_distro_config(f, distr, vmlinuzPath, initrdPath):
-	info = distro_info(distr, vmlinuzPath)
-	f.write(distromenu_value %( distro_proper_name[distr.lower()], info[0], info[1],
-								distro_proper_name[distr.lower()], info[0], info[1],
-								vmlinuzPath, initrdPath, info[2],
-								distro_proper_name[distr.lower()], info[0], 
-								info[1]))
 
-def foot_distro_config(f):
-	f.write (distromenu_footer)
+#create PXE config file for main menu
+def generate_root_config(pxedir):
+	os.chdir(pxedir)
+
+	f = open(os.getcwd()+'/default','a')
+	f.write(mainmenu)
+	
+
+	#add subdirectories to menu
+	for o in os.listdir(os.getcwd()):
+		if os.path.isdir(os.path.join(os.getcwd(),o)):
+			f.write(submenu_value % (pxedir,o,o))
 	f.close()
+	os.chdir('..')
+
+def generate_submenu_config(path, topDir):
+	os.chdir(path)
+	f = open (os.getcwd().split('/')[-1]+'.conf','a') 
+	f.write(submenu_header % (path, path,"You are in "+path))
+	for o in os.listdir(os.getcwd()):
+		if os.path.isdir(os.path.join(os.getcwd(),o)):
+			f.write(submenu_value % (path,o,o))
+	f.write(footer)
+	f.close()
+	os.chdir(topDir)
+
+
 
