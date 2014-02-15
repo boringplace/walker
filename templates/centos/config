@@ -1,0 +1,4 @@
+stopbefore=images
+kernel=$stopbefore1$/pxeboot/vmlinuz
+initrd=$stopbefore1$/pxeboot/initrd.img
+append=repo=$stopwhen0$
