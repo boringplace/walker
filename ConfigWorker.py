@@ -1,11 +1,6 @@
 import os
 import os.path
 
-from ConfigSupplier import *
-
-#convert from repositories folder to apropriate names
-distro_proper_name = {'centos': 'CentOS', 'rhel': 'RHEL', 'fedora': 'Fedora'}
-
 #first booting menu
 mainmenu = """DEFAULT vesamenu.c32
 PROMPT 0
