@@ -1,46 +1,49 @@
-import glob 
-
+import shutil
+import os
+from ConfigWorker import *
 from RSyncWalker import *
 from CheckExists import exists
-from ConfigWorker import *
+from Templates.rh import *
 
-path = 'tmp'
-#url = 'rsync://mirror.yandex.ru/'
+pxedir= 'pxeconf.d'
+
+url = 'rsync://mirror.yandex.ru/'
 #url = 'rsync://mirrors.kernel.org/mirrors/'
-url = 'rsync://mirrors.sgu.ru/'
-allowedRepos = ['centos', 'fedora']
+#url = 'rsync://mirrors.sgu.ru/'
 
-#encapsulate rsync methods
-w = walker(url)
+allowedRepos = ['centos']
 
 #get main tree (usually doesn't work correcly with recursive rsync)
-basicDirectories = read_rootdir_walker(w)
+directories = read_rootdir_walker(walker(url))
 
 #remove unused (yet) repos
-basicDirectories = [d for d in basicDirectories if d in allowedRepos]
+directories = [d for d in directories if d in allowedRepos]
 
-
-if not os.path.isdir('./walkresult'):
-	os.mkdir('walkresult')
+if os.path.isdir(pxedir):
+	shutil.rmtree(pxedir)	#remove old walking confs to allow updates without 
+									#overwritiing
 else:
-	for f in glob.glob("./walkresult/*"):
-		os.remove(f)#remove old walking confs to allow updates without 
-					#overwritiing
-
-generate_main_config(allowedRepos)
+	os.mkdir(pxedir)
 
 
-urlForConfig= exists(url)
-if (urlForConfig!=False):
-	for d in basicDirectories:
-		res = recursive_walk_directory(url+d)
-		i=0
-		f = create_distro_config(d)
-		while(i<len(res)): #iterate with step==2 to pick up initrd and vmlinuz
-			initrd = urlForConfig+d+'/'+res[i];
-			vmlinuz = urlForConfig+d+'/'+res[i+1];
-			fill_distro_config(f, d, vmlinuz, initrd)
-			i += 2
-		foot_distro_config(f)
 
-print ("Results are stored in: "+os.getcwd()+"/walkresult/")
+urlForConfig= exists(url) #check availability via http or ftp
+
+if urlForConfig:
+ 	for d in directories:
+ 		#call a walker to send us contents from url (rsync one )+directory
+ 		#using os.path.join to handle present/absent '/' sign
+ 		res = recursive_walk_directory(os.path.join(url,d))
+ 		
+ 		rh = rh_Template()
+ 		
+ 		for f in res:
+ 			rh.test_file(f)
+
+ 			if rh.test_complete():
+ 				rh.build_directories(pxedir,d,f)
+ 				rh = rh_Template()
+ 		elems = '/'.join([pxedir,d])
+ 		generate_submenu_config(elems)
+
+ 	generate_root_config(pxedir)
