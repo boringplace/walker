@@ -23,15 +23,13 @@ else:
 initDir = os.getcwd() #preserve to return back home
 
 
-#generate_main_config(allowedRepos)
-
 urlForConfig= exists(url)
 
 if (urlForConfig!=False):
 	for d in basicDirectories:
 		res = recursive_walk_directory(url+d)
 		i=0
-#		f = create_distro_config(d)
+
 		while(i<len(res)): #iterate with step==2 to pick up initrd and vmlinuz
 			initrd = urlForConfig+d+'/'+res[i];
 			vmlinuz = urlForConfig+d+'/'+res[i+1];
