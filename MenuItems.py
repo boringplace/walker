@@ -1,4 +1,3 @@
-
 def main_menu():
 	return """DEFAULT vesamenu.c32
 PROMPT 0
@@ -35,5 +34,13 @@ ENDTEXT
 """
 
 def submenu_value():
- return "menu include %s/%s.conf %s\n"
+	return "menu include %s/%s/%s.conf %s\n"
 
+def finalmenu_label():
+	return """label boot
+		MENU LABEL Booth This"""
+
+def finalmenu_helper():
+	return """TEXT HELP
+		Selecting this wiil boot current image
+	ENDTEXT"""

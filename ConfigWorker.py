@@ -1,6 +1,6 @@
 import os
 import os.path
-from ConfigSupplier import * #all the displayable data
+from MenuItems import * #all the displayable data
 
 #create PXE config file for main menu
 def generate_root_config(pxedir):
@@ -12,24 +12,24 @@ def generate_root_config(pxedir):
 	#add subdirectories to menu
 	for o in os.listdir(os.getcwd()):
 		if os.path.isdir(os.path.join(os.getcwd(),o)):
-			f.write(submenu_value() % (pxedir,o,o))
+			f.write(submenu_value() % (pxedir,o,o,o))
 	f.close()
 	os.chdir('..')
 
 #create submenus and its configs to resemble repository view
-def generate_submenu_config(path, topDir):
-	os.chdir(path)
-	f = open (os.getcwd().split('/')[-1]+'.conf','a') 
+def generate_submenu_config(path):
+	for root,dirs,files in os.walk(path):
+		#avoid creating files in final directory
+		if os.listdir(root) != []:
+			config_path = root+'/'+root.split('/')[-1]+'.conf'
+			f = open(config_path,'a')
+			f.write(submenu_header() % (root, root,"You are in "+root))
+			
+			for p in sorted(dirs): #solves problem of randomly sorted results from rsyn
+			 f.write(submenu_value() % (root,p,p,p))
 
-	f.write(submenu_header() % (path, path,"You are in "+path))
-	for o in os.listdir(os.getcwd()):
-		if os.path.isdir(os.path.join(os.getcwd(),o)):
-			f.write(submenu_value() % (path,o,o))
-	
-	f.write(footer())
-	f.close()
-	os.chdir(topDir) #directories are generated as drop-down tree
-					 #so we return each time back to top
+			f.write(footer())
+			f.close()
 
 
 
