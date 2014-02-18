@@ -20,10 +20,12 @@ def generate_root_config(pxedir):
 def generate_submenu_config(path):
 	for root,dirs,files in os.walk(path):
 		#avoid creating files in final directory
-		if os.listdir(root) != []:
+
+		if find_all_dirs(root):
+
 			config_path = root+'/'+root.split('/')[-1]+'.conf'
 			f = open(config_path,'a')
-			f.write(submenu_header() % (root, root,"You are in "+root))
+			f.write(submenu_header() % (root, root, root))
 			
 			for p in sorted(dirs): #solves problem of randomly sorted results from rsyn
 			 f.write(submenu_value() % (root,p,p,p))
@@ -31,5 +33,27 @@ def generate_submenu_config(path):
 			f.write(footer())
 			f.close()
 
+def generate_tree_view(pxedir):
+	for root, dirs, files in os.walk(pxedir):
+		level = root.replace(pxedir, '').count(os.sep)
+		indent = ' ' * 4 * (level)
+		print('{}{}/'.format(indent, os.path.basename(root)))
+		subindent = ' ' * 4 * (level + 1)
+		for f in files:
+			print('{}{}'.format(subindent, f))
 
+def generate_final_menu(f,p,data):
+	f.write(submenu_header() % (p,p,p))
+	f.write(finalmenu_label())
+	for line in data:
+		f.write(line)
+	f.write(finalmenu_helper())
+	f.write(footer())
+	f.close()
 
+def find_all_dirs(root):
+	result = 0 
+	for path,dirs,files in os.walk(root):
+		for d in dirs:
+			result += 1
+	return result

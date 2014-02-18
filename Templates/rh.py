@@ -13,7 +13,22 @@ class rh_Template(Template_Tester):
 	def test_complete(self):
 		return super(rh_Template, self).test_complete()
 
-	def build_directories(self,pxeDir,d,f):	
-		path = os.path.join(pxeDir,d, f.split('images')[0])
+	def build_directories(self,pxeDir,url,d,f):	
+		p = f.split('images')[0]
+		path = os.path.join(pxeDir,d,p)
 		os.makedirs(path)
+		self.write_config(path,url,d,p,pxeDir)
 
+	def write_config(self,path,url,d,p,pxeDir):
+		final_config_name=path+path.split('/')[-2]+'.conf'
+		
+		
+		kernel ='\tkernel '+ url + d +'/'+ p +'images/pxeboot/vmlinuz\n'
+		initrd ='\tinitrd '+ url + d + '/' + p +'images/pxeboot/initrd.img\n'
+		append = '\tAPPEND repo=' + url + d + '/' + p+'\n'
+		data = [kernel,initrd,append]
+		
+		localpxe = pxeDir+'/'+p
+		
+		f = open(final_config_name,'a')
+		generate_final_menu(f,localpxe,data)

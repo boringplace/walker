@@ -29,7 +29,7 @@ MENU TITLE %s
 MENU LABEL ^%s
 
 TEXT HELP
-	%s 
+	You are in %s 
 ENDTEXT
 """
 
@@ -38,9 +38,10 @@ def submenu_value():
 
 def finalmenu_label():
 	return """label boot
-		MENU LABEL Booth This"""
+	MENU LABEL Booth this\n"""
 
+#with indents
 def finalmenu_helper():
-	return """TEXT HELP
+	return """\tTEXT HELP
 		Selecting this wiil boot current image
-	ENDTEXT"""
+	ENDTEXT\n"""
