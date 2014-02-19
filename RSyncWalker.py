@@ -6,8 +6,6 @@ def walker(url):
 
 def recursive_walker(url):
 	cmd = ['rsync','-r']
-#	cmd.append('--include-from=.includes')
-#	cmd.append('--exclude-from=.excludes')
 	cmd.append(url)
 	p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
 	return p
