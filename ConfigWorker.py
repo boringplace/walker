@@ -33,6 +33,15 @@ def generate_submenu_config(path):
 			f.write(footer())
 			f.close()
 
+def generate_final_menu(f,p,data):
+	f.write(submenu_header() % (p,p,p))
+	f.write(finalmenu_label())
+	for line in data:
+		f.write(line)
+	f.write(finalmenu_helper())
+	f.write(footer())
+	f.close()
+
 def generate_tree_view(pxedir):
 	for root, dirs, files in os.walk(pxedir):
 		level = root.replace(pxedir, '').count(os.sep)
@@ -42,14 +51,6 @@ def generate_tree_view(pxedir):
 		for f in files:
 			print('{}{}'.format(subindent, f))
 
-def generate_final_menu(f,p,data):
-	f.write(submenu_header() % (p,p,p))
-	f.write(finalmenu_label())
-	for line in data:
-		f.write(line)
-	f.write(finalmenu_helper())
-	f.write(footer())
-	f.close()
 
 def find_all_dirs(root):
 	result = 0 

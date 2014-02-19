@@ -1,5 +1,5 @@
 from ConfigWorker import *
-from Templates.TemplateTester import *
+from templates.Template_Tester import *
 import os
 
 class rh_Template(Template_Tester):
@@ -32,3 +32,7 @@ class rh_Template(Template_Tester):
 		
 		f = open(final_config_name,'a')
 		generate_final_menu(f,localpxe,data)
+
+	def reinit(self):
+		for key in self.files:
+			self.files[key] = 0
