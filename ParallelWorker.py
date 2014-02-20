@@ -1,5 +1,6 @@
-from TemplateInit import init_templates;
+from TemplateInit import init_templates
 from RSyncWalker import recursive_walk_directory
+from ConfigWorker import generate_submenu_config
 
 import os
 import threading

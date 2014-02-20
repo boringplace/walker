@@ -3,7 +3,7 @@ import os
 import timeit
 
 from ConfigWorker import generate_root_config, generate_tree_view
-from RSyncWalker import read_rootdir_walker
+from RSyncWalker import walk_root_directory, walker
 from CheckExists import exists
 from ParallelWorker import walk
 
@@ -11,9 +11,9 @@ pxedir= 'pxeconf.d'
 tree = 'tree'
 
 #mirrors. move to ARGS in future
-#url = 'rsync://mirror.yandex.ru/'
+url = 'rsync://mirror.yandex.ru/'
 #url = 'rsync://mirrors.kernel.org/mirrors/'
-url = 'rsync://mirrors.sgu.ru/'
+#url = 'rsync://mirrors.sgu.ru/'
 
 #get main tree (usually doesn't work correcly with recursive rsync)
 directories = walk_root_directory(walker(url))
