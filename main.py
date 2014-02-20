@@ -5,7 +5,8 @@ import timeit
 from ConfigWorker import *
 from RSyncWalker import *
 from CheckExists import exists
-from TemplateInit import *
+from TemplateInit import init_templates
+from ParallelWorker import walk
 
 pxedir= 'pxeconf.d'
 tree = 'tree'
@@ -35,35 +36,36 @@ if os.path.exists(tree):
 os.mkdir(pxedir)
 
 #initializing templates for distros
-templates = init_templates()
+#templates = init_templates()
 
 urlForConfig = exists(url) #check availability via http or ftp
 
 if urlForConfig:
 
 	global_start = timeit.default_timer()
+	walk(directories, url, urlForConfig, pxedir)
 
-	for d in directories:
-		start = timeit.default_timer()
-		print ("Checking: "+d)
+	#for d in directories:
+		#start = timeit.default_timer()
+		#print ("Checking: "+d)
+
 
 		#call a walker to send us contents from url(rsync://)+directory
 		#using os.path.join to handle present/absent '/' sign
-		res = recursive_walk_directory(os.path.join(url,d))
+	#	res = recursive_walk_directory(os.path.join(url,d))
 	
-		for elem in res:
-			for t in templates:
-				t.test_file(elem)
-				if t.test_complete():
-					t.build_directories(pxedir,urlForConfig,d,elem)
-					for t in templates:
-						t.reinit()
-					break
+	#	for elem in res:
+	#		for t in templates:
+	#			t.test_file(elem)
+	#			if t.test_complete():
+	#				t.build_directories(pxedir,urlForConfig,d,elem)
+	#				for t in templates:
+	#					t.reinit()
+	#				break
 		#if parallel, then move out of the directory loop
+	for d in directories:	
 		generate_submenu_config('/'.join([pxedir,d]))
-		
-		elapsed = timeit.default_timer() - start
-		print (elapsed)
+
 	
 	generate_root_config(pxedir)
 	print('Mirror walked. Results are in '+os.getcwd()+'/'+pxedir)
@@ -72,6 +74,5 @@ if urlForConfig:
 
 	generate_tree_view(pxedir)
 	print('PXE tree is in '+os.getcwd()+'/'+'tree')
-
 else:
 	print("Something went wrong. Walker shattered some glass")
