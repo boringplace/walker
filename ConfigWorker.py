@@ -43,13 +43,15 @@ def generate_final_menu(f,p,data):
 	f.close()
 
 def generate_tree_view(pxedir):
+	tree = open('tree','a')
+
 	for root, dirs, files in os.walk(pxedir):
 		level = root.replace(pxedir, '').count(os.sep)
 		indent = ' ' * 4 * (level)
-		print('{}{}/'.format(indent, os.path.basename(root)))
+		tree.write('{}{}/\n'.format(indent, os.path.basename(root)))
 		subindent = ' ' * 4 * (level + 1)
 		for f in files:
-			print('{}{}'.format(subindent, f))
+			tree.write('{}{}\n'.format(subindent, f))
 
 
 def find_all_dirs(root):

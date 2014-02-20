@@ -4,7 +4,7 @@ import os
 
 class rh_Template(Template_Tester):
 	def __init__(self):
-		self.files = { r'(.*?)\/images\/pxeboot\/initrd\.img':0,
+		self.files = {  r'(.*?)\/images\/pxeboot\/initrd\.img':0,
 						r'(.*?)\/images\/pxeboot\/vmlinuz':0}
 
 	
