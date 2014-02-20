@@ -7,11 +7,14 @@ import threading
 global num
 def walk(directories,url,urlForConfig,pxedir):
 	global num
-	num = len(directories)
-	print (num)
-	#kind of lock() protection to stay in walk()
 	
+	#lock thing
+	num = len(directories)
+	
+	#to stay in the loop without 
 	has_started = False
+	
+	#kind of lock() protection to stay in walk()
 	while (num!=0):
 		if not has_started:
 			for d in directories:
@@ -34,3 +37,4 @@ def stepIn(url,urlForConfig,pxedir,d):
 				break
 	global num
 	num -= 1
+	generate_submenu_config('/'.join([pxedir,d]))
