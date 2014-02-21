@@ -4,3 +4,4 @@
 *.iso
 **vmlinuz
 */linux
+*/current*/
