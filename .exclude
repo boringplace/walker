@@ -1,7 +1,7 @@
 *
 *.rpm
 *.deb
-*/Packages
+*/Packages/***
 *.tar.gz
-*/Daedalus
-*/Sisyphus
+*/Daedalus/***
+*/Sisyphus/***

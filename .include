@@ -1,6 +1,6 @@
 */
-*/initrd*
+**initrd*
 *.img
 *.iso
-*/vmlinuz
+**vmlinuz
 */linux
