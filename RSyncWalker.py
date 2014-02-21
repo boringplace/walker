@@ -6,13 +6,14 @@ def walker(url):
 
 def recursive_walker(url):
 	#move includes and excludes to templates from common files!!
+
 	#--no-motd for repos needed (like mirrors.kernel.org)
 	cmd = ['rsync','-r --no-motd','--include-from=.include', '--exclude-from=.exclude']
 	cmd.append(url)
 	p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
 	return p
 
-def read_rootdir_walker(walker):
+def walk_root_directory(walker):
 	directories = []
 	for line in walker.stdout:
 		try:
