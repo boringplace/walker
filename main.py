@@ -18,8 +18,6 @@ url = 'rsync://mirror.yandex.ru/'
 #get main tree (usually doesn't work correcly with recursive rsync)
 directories = walk_root_directory(walker(url))
 
-#TEST!
-directories=['ubuntu']
 if os.path.isdir(pxedir):
 	shutil.rmtree(pxedir) #remove old directory (protect from overwrite)
 if os.path.exists(tree):

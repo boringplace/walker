@@ -4,8 +4,8 @@ import os
 
 class ubuntu_Template(Template_Tester):
 	def __init__(self):
-		self.files = {  r'(.*?)\/current\/images\/netboot\/(.*?)\/linux':0,
-						r'(.*?)\/current\/images\/netboot\/(.*?)\/initrd.gz':0}
+		self.files = {  r'(.*?)\/images\/netboot\/(.*?)\/linux':0,
+						r'(.*?)\/images\/netboot\/(.*?)\/initrd.gz':0}
 		#TEST
 		print ('ubuntu init')
 
@@ -17,10 +17,10 @@ class ubuntu_Template(Template_Tester):
 		return super(ubuntu_Template, self).test_complete()
 
 	def build_directories(self,pxeDir,url,d,f):	
-		p = f.split('current')[0]
+		p = f.split('images')[0]
 		print(p)
-		#path = os.path.join(pxeDir,d,p)
-		#os.makedirs(path)
+		path = os.path.join(pxeDir,d,p)
+		os.makedirs(path)
 		#self.write_config(path,url,d,p,pxeDir)
 
 	def write_config(self,path,url,d,p,pxeDir):

@@ -7,7 +7,8 @@ def walker(url):
 def recursive_walker(url):
 	#move includes and excludes to templates from common files!!s
 	#--no-motd for repos needed (like mirrors.kernel.org)
-	cmd = ['rsync','-r','--no-motd','--include-from=.include', '--exclude-from=.exclude']
+	#-k --keep-links - treat symlink as directory (for debian/ubuntu or like them)
+	cmd = ['rsync','-r','-k', '--no-motd','--include-from=.include', '--exclude-from=.exclude']
 	cmd.append(url)
 	p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
 	return p

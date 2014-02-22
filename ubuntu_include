@@ -1,0 +1,15 @@
++ dists/
++ dists/*
++ dists/*/main
++ dists/*/main/*
++ dists/*/main/*/*
++ dists/*/main/*/*/images
++ dists/*/main/*/*/images/
++ dists/*/main/*/*/images/netboot
++ dists/*/main/*/*/images/netboot/
++ dists/*/main/*/*/images/netboot/ubuntu-installer
++ dists/*/main/*/*/images/netboot/ubuntu-installer/
++ dists/*/main/*/*/images/netboot/ubuntu-installer/*
++ dists/*/main/*/*/images/netboot/ubuntu-installer/*/initrd.gz
++ dists/*/main/*/*/images/netboot/ubuntu-installer/*/linux
+- *

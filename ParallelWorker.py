@@ -11,6 +11,7 @@ def walk(directories,url,urlForConfig,pxedir):
 	
 	#lock thing
 	num = len(directories)
+	print (directories)
 	
 	#to stay in the loop without 
 	has_started = False
