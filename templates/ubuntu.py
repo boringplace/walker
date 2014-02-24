@@ -16,6 +16,10 @@ class ubuntu_Template(Template_Tester):
 	def build_directories(self,pxeDir,url,d,f):	
 		p = f.split('images')[0]
 		path = os.path.join(pxeDir,d,p)
+		#avoid some stange thing with debian and part of ubuntu paths
+		#when current symlink doesn't convert to current subfolder
+		if (os.path.exists(path)):
+			return 
 		os.makedirs(path)
 		self.write_config(path,url,d,p,pxeDir)
 

@@ -1,7 +1,16 @@
-*/
-**initrd*
-*.img
-*.iso
-**vmlinuz
-*/linux
-
++ */
++ initrd.gz
++ linux
++ initrd.img
++ vmlinuz
++ *.iso
+- */ubuntu/
+- */ubuntu/***
+- dists/*-updates/
+- dists/*-updates/***
+- dists/*-proposed/
+- dists/*-proposed/***
+- *.rpm
+- *.tar.gz
+- *.rpm
+- *

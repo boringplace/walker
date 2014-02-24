@@ -3,7 +3,7 @@ import os
 import timeit
 
 from ConfigWorker import generate_root_config, generate_tree_view
-from RSyncWalker import walk_root_directory, walker, append_includes
+from RSyncWalker import walk_root_directory, walker
 from CheckExists import exists
 from ParallelWorker import walk
 
@@ -16,8 +16,8 @@ url = 'rsync://mirror.yandex.ru/'
 #url = 'rsync://mirrors.sgu.ru/'
 
 #get main tree (usually doesn't work correcly with recursive rsync)
-#directories = walk_root_directory(walker(url))
-directories = ['ubuntu']
+directories = walk_root_directory(walker(url))
+directories = ['ubuntu', 'debian']
 if os.path.isdir(pxedir):
 	shutil.rmtree(pxedir) #remove old directory (protect from overwrite)
 if os.path.exists(tree):
@@ -31,7 +31,6 @@ urlForConfig = exists(url)
 
 if urlForConfig:
 	global_start = timeit.default_timer()
-	append_includes()
 	#start parallel worker here
 	walk(directories, url, urlForConfig, pxedir)
 

@@ -1,5 +1,4 @@
 import subprocess
-import os 
 
 def walker(url):
 	p = subprocess.Popen(['rsync',url], stdout=subprocess.PIPE)
@@ -35,23 +34,4 @@ def read_contents(walker): #for recursive walker
 
 def recursive_walk_directory(basicDir):	
 	return read_contents(recursive_walker(basicDir))
-
-def append_includes():
-	if os.path.exists('.include'):
-		os.remove('.include')
-	
-	for root,dirs,files in os.walk('templates/includes'):
-		print (files)
-		include_files = files
-
-	tmp = open('.include','a')
-
-	for files in include_files:
-		f = open('templates/includes/'+files)
-		for line in f:
-			if not line.endswith('\n'):
-				line += '\n'
-			tmp.write(line)
-	
-
 

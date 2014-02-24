@@ -26,7 +26,6 @@ def stepIn(url,urlForConfig,pxedir,d):
 	res = recursive_walk_directory(os.path.join(url,d))
 	templates = init_templates();	
 	for elem in res:
-		print (elem)
 		for t in templates:
 			t.test_file(elem)
 			if t.test_complete():
