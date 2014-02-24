@@ -1,4 +1,5 @@
 import subprocess
+import os 
 
 def walker(url):
 	p = subprocess.Popen(['rsync',url], stdout=subprocess.PIPE)
@@ -8,7 +9,7 @@ def recursive_walker(url):
 	#move includes and excludes to templates from common files!!s
 	#--no-motd for repos needed (like mirrors.kernel.org)
 	#-k --keep-links - treat symlink as directory (for debian/ubuntu or like them)
-	cmd = ['rsync','-r','-k', '--no-motd','--include-from=.include', '--exclude-from=.exclude']
+	cmd = ['rsync','-r','-k', '--no-motd','--include-from=.include']
 	cmd.append(url)
 	p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
 	return p
@@ -35,5 +36,22 @@ def read_contents(walker): #for recursive walker
 def recursive_walk_directory(basicDir):	
 	return read_contents(recursive_walker(basicDir))
 
+def append_includes():
+	if os.path.exists('.include'):
+		os.remove('.include')
+	
+	for root,dirs,files in os.walk('templates/includes'):
+		print (files)
+		include_files = files
+
+	tmp = open('.include','a')
+
+	for files in include_files:
+		f = open('templates/includes/'+files)
+		for line in f:
+			if not line.endswith('\n'):
+				line += '\n'
+			tmp.write(line)
+	
 
 
