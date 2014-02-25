@@ -19,8 +19,10 @@ def walk_root_directory(walker):
 		try:
 			items = line.strip().split(None, 2)
 			item = items[0].decode("utf-8")
-
-			directories.append(item)
+			#rsync in root directory can't check motd
+			#such problem appears on mirrors.kernel.org
+			if not item.startswith('MOTD'):
+				directories.append(item)
 		except IndexError:
 			pass
 	return directories

@@ -11,9 +11,12 @@ pxedir= 'pxeconf.d'
 tree = 'tree'
 
 #mirrors. move to ARGS in future
-url = 'rsync://mirror.yandex.ru/'
-#url = 'rsync://mirrors.kernel.org/mirrors/'
-#url = 'rsync://mirrors.sgu.ru/'
+#url = 'rsync://mirror.yandex.ru/'
+#url = 'rsync://mirrors.kernel.org/'
+url = 'rsync://mirrors.sgu.ru/'
+
+
+if (url[-1]!= '/'): url += '/'
 
 #get main tree (usually doesn't work correcly with recursive rsync)
 directories = walk_root_directory(walker(url))

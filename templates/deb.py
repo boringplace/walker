@@ -16,10 +16,14 @@ class deb_Template(Template_Tester):
 	def build_directories(self,pxeDir,url,d,f):	
 		p = f.split('images')[0]
 		path = os.path.join(pxeDir,d,p)
-		#avoid some stange thing with debian and part of ubuntu paths
+		#avoid some strange thing with debian and part of ubuntu paths
 		#when 'current' symlink doesn't convert to 'current' subfolder
 		if (os.path.exists(path)):
 			return 
+		#avoid some bug with inifinite ubuntu subdirs on some mirrors
+		#somehow it's not handeled by .include file when runned in the script
+		if (p.split('/')[0]=='ubuntu'):
+			return
 		os.makedirs(path)
 		self.write_config(url,d,f,pxeDir)
 
@@ -30,7 +34,7 @@ class deb_Template(Template_Tester):
 		config_file=last_dir+'.conf'
 
 		final_config_name=os.path.join(pxeDir,d,p,config_file)
-		print (config_file)	
+
 		kernel ='\tkernel '+ url + d +'/'+ '/'.join(f.split('/')[:-1]) +'/linux\n'
 		initrd ='\tinitrd '+ url + d + '/' + '/'.join(f.split('/')[:-1]) +'/initrd.gz\n'
 		data = [kernel,initrd]
