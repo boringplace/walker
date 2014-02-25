@@ -6,21 +6,20 @@ import os
 import threading
 import timeit
 
-global num
-def walk(directories,url,urlForConfig,pxedir):
-	global num
-	
-	#lock thing
-	num = len(directories)
-	#to stay in the loop with lock
-	has_started = False
+global directories
+def walk(dirs,url,urlForConfig,pxedir):
 	#kind of lock() protection to stay in walk()
-	while (num!=0):
+	global directories
+	directories = dirs 
+	#another lock
+	has_started = False
+	while (len(directories)!=0):
 		if not has_started:
+			has_started = True
 			for d in directories:
 				t =threading.Thread(target=stepIn,args=(url,urlForConfig,pxedir,d))
 				t.start()
-				has_started = True
+
 
 def stepIn(url,urlForConfig,pxedir,d):
 	print ('Checking: '+d)
@@ -50,8 +49,7 @@ def stepIn(url,urlForConfig,pxedir,d):
 				isot.build_directories(pxedir,urlForConfig,d,elem)
 				isot.reinit()
 
-	global num
-	num -= 1
 	print ('Checked: %s in %f'% (d,timeit.default_timer()-start))
-	print ('%s: %d' %('Left',num))
 	generate_submenu_config('/'.join([pxedir,d]))
+	global directories
+	if d in directories: directories.remove(d)

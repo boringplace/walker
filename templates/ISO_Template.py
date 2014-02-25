@@ -16,21 +16,34 @@ class ISO_Template(Template_Tester):
 	def build_directories(self,pxeDir,url,d,f):	
 		p = f.split('/')[:-1]
 		path = os.path.join(pxeDir,d,'/'.join(p))
+		
+		if (os.path.exists(path)):
+			return 
+
 		os.makedirs(path)
 		self.write_config(url,d,f,pxeDir)
 
 	def write_config(self,url,d,f,pxeDir):
-		last_dir = f.split('/')[-2]
-		config_file = last_dir+'.conf'		
-		final_config_name=os.path.join(pxeDir,d,last_dir,config_file)
 		
-		kernel ='\tmemdisk\n'
+		try:
+			last_dir = f.split('/')[-2]
+		except IndexError:
+			pass
+			iso_dir = pxeDir + '/' + d  +'/' +f.split('.iso')[0]		
+			#errrg multithreading sometimes goes wrong
+			if not os.path.exists(iso_dir):
+				os.makedirs(iso_dir)
+			last_dir = f.split('/')[-2]
+
+		config_file = last_dir+'.conf'		
+		final_config_name=os.path.join(pxeDir,d,'/'.join(f.split('/')[:-1]),config_file)
+		
+		kernel ='\tkernel memdisk\n'
 		append = '\tAPPEND iso initrd=' + url + d + '/' + f +'\n'
 		
 		data = [kernel,append]
 		
 		localpxe = pxeDir+'/'+ '/'.join(f.split('/')[:-1])
-		print (pxeDir)
 		
 		f = open(final_config_name,'a')
 		generate_final_menu(f,localpxe,data)
