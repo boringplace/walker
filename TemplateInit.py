@@ -13,7 +13,7 @@ def init_templates():
 				for elem in dir(module_obj):
 					obj = getattr (module_obj, elem)
 					#delete extra element from importing classes rh,debian,ubuntu
-					if elem is not "Template_Tester":
+					if elem is not "Template_Tester" and elem is not "ISO_Template":
 						if inspect.isclass(obj): 
 							a = obj()
 							plugins.append(a)

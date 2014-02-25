@@ -4,9 +4,9 @@
 + initrd.img
 + vmlinuz
 + *.iso
++ dists/
 - ubuntu/
 - ubuntu/***
-+ dists/
 - dists/*-updates/
 - dists/*-updates/***
 - dists/*-proposed/

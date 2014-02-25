@@ -33,7 +33,7 @@ class deb_Template(Template_Tester):
 		last_dir= p.split('/')[-2]
 		config_file=last_dir+'.conf'
 
-		final_config_name=os.path.join(pxeDir,d,p,config_file)
+		final_config_name=os.path.join(pxeDir,d,f,config_file)
 
 		kernel ='\tkernel '+ url + d +'/'+ '/'.join(f.split('/')[:-1]) +'/linux\n'
 		initrd ='\tinitrd '+ url + d + '/' + '/'.join(f.split('/')[:-1]) +'/initrd.gz\n'
