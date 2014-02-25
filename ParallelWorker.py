@@ -12,13 +12,16 @@ def walk(dirs,url,urlForConfig,pxedir):
 	global directories
 	directories = dirs 
 	#another lock
-	has_started = False
-	while (len(directories)!=0):
-		if not has_started:
-			has_started = True
-			for d in directories:
-				t =threading.Thread(target=stepIn,args=(url,urlForConfig,pxedir,d))
-				t.start()
+#	has_started = False
+#	while (len(directories)!=0):
+	threads = []
+	for d in directories:
+		t =threading.Thread(target=stepIn,args=(url,urlForConfig,pxedir,d))
+		t.start()
+		threads.append(t)
+	for t in threads:	
+		t.join()
+
 
 
 def stepIn(url,urlForConfig,pxedir,d):
@@ -51,5 +54,3 @@ def stepIn(url,urlForConfig,pxedir,d):
 
 	print ('Checked: %s in %f'% (d,timeit.default_timer()-start))
 	generate_submenu_config('/'.join([pxedir,d]))
-	global directories
-	if d in directories: directories.remove(d)

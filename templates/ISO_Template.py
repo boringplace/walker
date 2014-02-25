@@ -33,7 +33,7 @@ class ISO_Template(Template_Tester):
 			#errrg multithreading sometimes goes wrong
 			if not os.path.exists(iso_dir):
 				os.makedirs(iso_dir)
-			last_dir = f.split('/')[-2]
+			last_dir = f.split('/')[-1]
 
 		config_file = last_dir+'.conf'		
 		final_config_name=os.path.join(pxeDir,d,'/'.join(f.split('/')[:-1]),config_file)

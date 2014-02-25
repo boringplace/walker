@@ -5,6 +5,8 @@
 + vmlinuz
 + *.iso
 + dists/
+- FreeBSD/
+- FreeBSD/***
 - ubuntu/
 - ubuntu/***
 - dists/*-updates/
