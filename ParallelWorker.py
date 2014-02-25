@@ -4,6 +4,7 @@ from ConfigWorker import generate_submenu_config
 
 import os
 import threading
+import timeit
 
 global num
 def walk(directories,url,urlForConfig,pxedir):
@@ -23,6 +24,8 @@ def walk(directories,url,urlForConfig,pxedir):
 
 def stepIn(url,urlForConfig,pxedir,d):
 	print ('Checking: '+d)
+	start = timeit.default_timer()
+
 	res = recursive_walk_directory(os.path.join(url,d))
 	templates = init_templates();	
 	for elem in res:
@@ -35,6 +38,6 @@ def stepIn(url,urlForConfig,pxedir,d):
 				break
 	global num
 	num -= 1
-	print ('Checked: '+d)
+	print ('Checked: %s in %f'% (d,timeit.default_timer()-start))
 	print ('%s: %d' %('Left',num))
 	generate_submenu_config('/'.join([pxedir,d]))

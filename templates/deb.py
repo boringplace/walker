@@ -2,33 +2,37 @@ from ConfigWorker import *
 from templates.Template_Tester import *
 import os
 
-class ubuntu_Template(Template_Tester):
+class deb_Template(Template_Tester):
 	def __init__(self):
 		self.files = {  r'(.*?)\/images\/netboot\/(.*?)\/linux':0,
 						r'(.*?)\/images\/netboot\/(.*?)\/initrd.gz':0}
 	
 	def test_file(self,f):
-		super(ubuntu_Template, self).test_file(f)
+		super(deb_Template, self).test_file(f)
 	
 	def test_complete(self):
-		return super(ubuntu_Template, self).test_complete()
+		return super(deb_Template, self).test_complete()
 
 	def build_directories(self,pxeDir,url,d,f):	
 		p = f.split('images')[0]
 		path = os.path.join(pxeDir,d,p)
 		#avoid some stange thing with debian and part of ubuntu paths
-		#when current symlink doesn't convert to current subfolder
+		#when 'current' symlink doesn't convert to 'current' subfolder
 		if (os.path.exists(path)):
 			return 
 		os.makedirs(path)
-		self.write_config(path,url,d,p,pxeDir)
+		self.write_config(url,d,f,pxeDir)
 
-	def write_config(self,path,url,d,p,pxeDir):
-		final_config_name=path+path.split('/')[-2]+'.conf'
-		
-		
-		kernel ='\tkernel '+ url + d +'/'+ p +'images/pxeboot/vmlinuz\n'
-		initrd ='\tinitrd '+ url + d + '/' + p +'images/pxeboot/initrd.img\n'
+	def write_config(self,url,d,f,pxeDir):
+		p = f.split('images')[0] 
+
+		last_dir= p.split('/')[-2]
+		config_file=last_dir+'.conf'
+
+		final_config_name=os.path.join(pxeDir,d,p,config_file)
+		print (config_file)	
+		kernel ='\tkernel '+ url + d +'/'+ '/'.join(f.split('/')[:-1]) +'/linux\n'
+		initrd ='\tinitrd '+ url + d + '/' + '/'.join(f.split('/')[:-1]) +'/initrd.gz\n'
 		data = [kernel,initrd]
 		
 		localpxe = pxeDir+'/'+p

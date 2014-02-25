@@ -4,12 +4,15 @@
 + initrd.img
 + vmlinuz
 + *.iso
-- */ubuntu/
-- */ubuntu/***
+- ubuntu/
+- ubuntu/***
++ dists/
 - dists/*-updates/
 - dists/*-updates/***
 - dists/*-proposed/
 - dists/*-proposed/***
+- pool/
+- pool/***
 - *.rpm
 - *.tar.gz
 - *.rpm

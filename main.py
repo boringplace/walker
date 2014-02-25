@@ -17,7 +17,6 @@ url = 'rsync://mirror.yandex.ru/'
 
 #get main tree (usually doesn't work correcly with recursive rsync)
 directories = walk_root_directory(walker(url))
-directories = ['ubuntu', 'debian']
 if os.path.isdir(pxedir):
 	shutil.rmtree(pxedir) #remove old directory (protect from overwrite)
 if os.path.exists(tree):
@@ -34,7 +33,7 @@ if urlForConfig:
 	#start parallel worker here
 	walk(directories, url, urlForConfig, pxedir)
 
-	#generate final config	
+	#generate final config
 	generate_root_config(pxedir)
 
 	generate_tree_view(pxedir)

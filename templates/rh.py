@@ -17,15 +17,20 @@ class rh_Template(Template_Tester):
 		p = f.split('images')[0]
 		path = os.path.join(pxeDir,d,p)
 		os.makedirs(path)
-		self.write_config(path,url,d,p,pxeDir)
+		self.write_config(url,d,f,pxeDir)
 
-	def write_config(self,path,url,d,p,pxeDir):
-		final_config_name=path+path.split('/')[-2]+'.conf'
-		
+	def write_config(self,url,d,f,pxeDir):
+		p = f.split('images')[0] 
+
+		last_dir = p.split('/')[-2]
+		config_file = last_dir+'.conf'
+
+		final_config_name=os.path.join(pxeDir,d,p,config_file)
 		
 		kernel ='\tkernel '+ url + d +'/'+ p +'images/pxeboot/vmlinuz\n'
 		initrd ='\tinitrd '+ url + d + '/' + p +'images/pxeboot/initrd.img\n'
 		append = '\tAPPEND repo=' + url + d + '/' + p+'\n'
+		
 		data = [kernel,initrd,append]
 		
 		localpxe = pxeDir+'/'+p
