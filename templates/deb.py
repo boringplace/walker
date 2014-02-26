@@ -22,8 +22,8 @@ class deb_Template(Template_Tester):
 			return 
 		#avoid some bug with inifinite ubuntu subdirs on some mirrors
 		#somehow it's not handeled by .include file when runned in the script
-		if (p.split('/')[0]=='ubuntu'):
-			return
+		#if (p.split('/')[0]=='ubuntu'):
+		#	return
 		os.makedirs(path)
 		self.write_config(url,d,f,pxeDir)
 

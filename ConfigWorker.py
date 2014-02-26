@@ -1,20 +1,19 @@
 import os
-import os.path
 from MenuItems import * #all the displayable data
 
 #create PXE config file for main menu
 def generate_root_config(pxedir):
-	os.chdir(pxedir)
+	root_dir = os.path.join(os.getcwd(),pxedir)
+	root_file = os.path.join(root_dir,'default')
 
-	f = open(os.getcwd()+'/default','a')
+	f = open(root_file,'a')
 	f.write(main_menu())
 	
 	#add subdirectories to menu
-	for o in os.listdir(os.getcwd()):
-		if os.path.isdir(os.path.join(os.getcwd(),o)):
+	for o in sorted(os.listdir(root_dir)):
+		if os.path.isdir(os.path.join(root_dir,o)):
 			f.write(submenu_value() % (pxedir,o,o,o))
 	f.close()
-	os.chdir('..')
 
 #create submenus and its configs to resemble repository view
 def generate_submenu_config(path):
@@ -41,18 +40,6 @@ def generate_final_menu(f,p,data):
 	f.write(finalmenu_helper())
 	f.write(footer())
 	f.close()
-
-def generate_tree_view(pxedir):
-	tree = open('tree','a')
-
-	for root, dirs, files in os.walk(pxedir):
-		level = root.replace(pxedir, '').count(os.sep)
-		indent = ' ' * 4 * (level)
-		tree.write('{}{}/\n'.format(indent, os.path.basename(root)))
-		subindent = ' ' * 4 * (level + 1)
-		for f in files:
-			tree.write('{}{}\n'.format(subindent, f))
-
 
 def find_all_dirs(root):
 	result = 0 

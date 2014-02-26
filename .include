@@ -1,21 +1,17 @@
-+ */
+*/
 + initrd.gz
 + linux
 + initrd.img
 + vmlinuz
 + *.iso
 + dists/
-- FreeBSD/
-- FreeBSD/***
 - ubuntu/
 - ubuntu/***
 - dists/*-updates/
-- dists/*-updates/***
 - dists/*-proposed/
-- dists/*-proposed/***
 - pool/
-- pool/***
 - *.rpm
 - *.tar.gz
 - *.rpm
+- *.tar
 - *

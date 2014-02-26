@@ -1,8 +1,0 @@
-*
-*.rpm
-*.deb
-*.tar.gz
-**/Packages/***
-**/Sisyphus/***
-**/Daedalus/***
-**/pool/***
