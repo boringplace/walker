@@ -1,5 +1,5 @@
 from TemplateInit import init_templates
-from RSyncWalker import recursive_walk_directory
+from RSyncWorker import recursive_walk_directory
 from ConfigWorker import generate_submenu_config
 from templates.ISO_Template import ISO_Template
 import os

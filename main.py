@@ -3,7 +3,7 @@ import os
 import timeit
 
 from ConfigWorker import generate_root_config
-from RSyncWalker import walk_root_directory, walker
+from RSyncWorker import walk_root_directory, walker
 from CheckExists import exists
 from ParallelWorker import walk
 
@@ -12,8 +12,7 @@ pxedir= 'pxeconf.d'
 #mirrors. move to ARGS in future
 url = 'rsync://mirror.yandex.ru/'
 #url = 'rsync://mirrors.kernel.org/'
-#url = 'rsync://mirrors.sgu.ru/'
-
+#url = 'rsync://mirrors.sgu.ru/'s
 
 if (url[-1]!= '/'): url += '/'
 
@@ -29,7 +28,6 @@ os.mkdir(pxedir)
 urlForConfig = exists(url)
 
 if urlForConfig:
-	global_start = timeit.default_timer()
 	#start parallel worker here
 	walk(directories, url, urlForConfig, pxedir)
 
