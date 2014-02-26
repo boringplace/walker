@@ -1,11 +1,10 @@
 import os
-import os.path
 from MenuItems import * #all the displayable data
 
 #create PXE config file for main menu
 def generate_root_config(pxedir):
 
-	f = open(os.getcwd()+'pxelinux/pxelinux.cfg','a')
+	f = open(os.path.join(os.getcwd()+pxedir+'default'),'a')
 	f.write(main_menu())
 	
 	#add subdirectories to menu
@@ -13,7 +12,6 @@ def generate_root_config(pxedir):
 		if os.path.isdir(os.path.join(os.getcwd(),o)):
 			f.write(submenu_value() % (pxedir,o,o,o))
 	f.close()
-	os.chdir('..')
 
 #create submenus and its configs to resemble repository view
 def generate_submenu_config(path):

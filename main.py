@@ -7,7 +7,7 @@ from RSyncWorker import walk_root_directory, walker
 from CheckExists import exists
 from ParallelWorker import walk
 
-pxedir= 'pxeconf.d'
+pxedir= 'pxelinux.cfg'
 
 #mirrors. move to ARGS in future
 url = 'rsync://mirror.yandex.ru/'
