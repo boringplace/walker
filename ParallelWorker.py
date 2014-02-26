@@ -7,13 +7,8 @@ import threading
 import timeit
 
 global directories
-def walk(dirs,url,urlForConfig,pxedir):
+def walk(directories,url,urlForConfig,pxedir):
 	#kind of lock() protection to stay in walk()
-	global directories
-	directories = dirs 
-	#another lock
-#	has_started = False
-#	while (len(directories)!=0):
 	threads = []
 	for d in directories:
 		t =threading.Thread(target=stepIn,args=(url,urlForConfig,pxedir,d))

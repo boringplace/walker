@@ -4,9 +4,8 @@ from MenuItems import * #all the displayable data
 
 #create PXE config file for main menu
 def generate_root_config(pxedir):
-	os.chdir(pxedir)
 
-	f = open(os.getcwd()+'/default','a')
+	f = open(os.getcwd()+'pxelinux/pxelinux.cfg','a')
 	f.write(main_menu())
 	
 	#add subdirectories to menu
@@ -41,18 +40,6 @@ def generate_final_menu(f,p,data):
 	f.write(finalmenu_helper())
 	f.write(footer())
 	f.close()
-
-def generate_tree_view(pxedir):
-	tree = open('tree','a')
-
-	for root, dirs, files in os.walk(pxedir):
-		level = root.replace(pxedir, '').count(os.sep)
-		indent = ' ' * 4 * (level)
-		tree.write('{}{}/\n'.format(indent, os.path.basename(root)))
-		subindent = ' ' * 4 * (level + 1)
-		for f in files:
-			tree.write('{}{}\n'.format(subindent, f))
-
 
 def find_all_dirs(root):
 	result = 0 
