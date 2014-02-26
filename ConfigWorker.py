@@ -3,13 +3,15 @@ from MenuItems import * #all the displayable data
 
 #create PXE config file for main menu
 def generate_root_config(pxedir):
+	root_dir = os.path.join(os.getcwd(),pxedir)
+	root_file = os.path.join(root_dir,'default')
 
-	f = open(os.path.join(os.getcwd()+pxedir+'default'),'a')
+	f = open(root_file,'a')
 	f.write(main_menu())
 	
 	#add subdirectories to menu
-	for o in os.listdir(os.getcwd()):
-		if os.path.isdir(os.path.join(os.getcwd(),o)):
+	for o in sorted(os.listdir(root_dir)):
+		if os.path.isdir(os.path.join(root_dir,o)):
 			f.write(submenu_value() % (pxedir,o,o,o))
 	f.close()
 
