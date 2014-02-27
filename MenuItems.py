@@ -18,9 +18,6 @@ def footer():
 	return """label uplvl
         MENU LABEL Back
         MENU EXIT
-
-label spacer
-        MENU LABEL
 """     
 
 def submenu_header():
@@ -43,5 +40,5 @@ def finalmenu_label():
 #with indents
 def finalmenu_helper():
 	return """\tTEXT HELP
-		Selecting this wiil boot current image
+		Selecting this wiil boot current image: %s 
 	ENDTEXT\n"""

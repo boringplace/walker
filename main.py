@@ -1,6 +1,5 @@
 import shutil
 import os
-import timeit
 
 from ConfigWorker import generate_root_config
 from RSyncWorker import walk_root_directory, walker

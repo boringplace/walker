@@ -21,23 +21,23 @@ def generate_submenu_config(path):
 		#avoid creating files in final directory
 
 		if find_all_dirs(root):
-
-			config_path = root+'/'+root.split('/')[-1]+'.conf'
+			subdir = root.split('/')[-1]
+			config_path = root+'/'+subdir+'.conf'
 			f = open(config_path,'a')
-			f.write(submenu_header() % (root, root, root))
+			f.write(submenu_header() % (subdir, subdir, root))
 			
 			for p in sorted(dirs): #solves problem of randomly sorted results from rsyn
-			 f.write(submenu_value() % (root,p,p,p))
+			 f.write(submenu_value() % (root,p,p,p.split('/')[-1]))
 
 			f.write(footer())
 			f.close()
 
 def generate_final_menu(f,p,data):
-	f.write(submenu_header() % (p,p,p))
+	f.write(submenu_header() % (p.split('/')[-2],p.split('/')[-2],p))
 	f.write(finalmenu_label())
 	for line in data:
 		f.write(line)
-	f.write(finalmenu_helper())
+	f.write(finalmenu_helper() %p)
 	f.write(footer())
 	f.close()
 
