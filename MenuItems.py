@@ -40,5 +40,5 @@ def finalmenu_label():
 #with indents
 def finalmenu_helper():
 	return """\tTEXT HELP
-		Selecting this wiil boot current image: %s 
+		Selecting this wiil boot image in: %s 
 	ENDTEXT\n"""

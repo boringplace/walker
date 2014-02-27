@@ -37,7 +37,7 @@ def generate_final_menu(f,p,data):
 	f.write(finalmenu_label())
 	for line in data:
 		f.write(line)
-	f.write(finalmenu_helper() %p)
+	f.write(finalmenu_helper() %p.split('/')[-2])
 	f.write(footer())
 	f.close()
 
