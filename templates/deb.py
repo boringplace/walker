@@ -36,7 +36,7 @@ class deb_Template(Template_Tester):
 		final_config_name=os.path.join(pxeDir,d,p,config_file)
 
 		kernel ='\tkernel '+ url + d +'/'+ '/'.join(f.split('/')[:-1]) +'/linux\n'
-		initrd ='\tinitrd '+ url + d + '/' + '/'.join(f.split('/')[:-1]) +'/initrd.gz\n'
+		initrd ='\tAPPEND initrd='+ url + d + '/' + '/'.join(f.split('/')[:-1]) +'/initrd.gz\n'
 		data = [kernel,initrd]
 		
 		localpxe = pxeDir+'/'+p
