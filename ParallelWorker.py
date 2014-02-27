@@ -39,13 +39,13 @@ def stepIn(url,urlForConfig,pxedir,d):
 					t.reinit()
 				break
 
-	if not has_used_template:
-		isot = ISO_Template()
-		for elem in res:
-			isot.test_file(elem)
-			if isot.test_complete():
-				isot.build_directories(pxedir,urlForConfig,d,elem)
-				isot.reinit()
+	# if not has_used_template:
+	# 	isot = ISO_Template()
+	# 	for elem in res:
+	# 		isot.test_file(elem)
+	# 		if isot.test_complete():
+	# 			isot.build_directories(pxedir,urlForConfig,d,elem)
+	# 			isot.reinit()
 
 	print ('Checked: %s in %f'% (d,timeit.default_timer()-start))
 	generate_submenu_config('/'.join([pxedir,d]))

@@ -4,7 +4,7 @@ import os
 
 class ISO_Template(Template_Tester):
 	def __init__(self):
-		self.files = {r'(.*?)\/*.iso':0 }
+		self.files = {r'(.*?)\/*.iso$':0 }
 						
 	#keep the same logics, however, checking only one file					
 	def test_file(self,f):
