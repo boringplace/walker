@@ -38,7 +38,7 @@ def generate_final_menu(f,p,data):
 	for line in data:
 		f.write(line)
 	f.write(finalmenu_helper() %p.split('/')[-2])
-	f.write (footer() % ('/'.join(p.split('/')[:-1]),'.conf'))	
+	f.write (footer() % ('/'.join(p.split('/')[:-2])+'/',p.split('/')[-3]+'.conf'))	
 	f.close()
 
 def find_all_dirs(root):
