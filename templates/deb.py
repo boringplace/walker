@@ -35,7 +35,7 @@ class deb_Template(Template_Tester):
 		initrd ='\tAPPEND initrd='+ url + d + '/' + '/'.join(f.split('/')[:-1]) +'/initrd.gz\n'
 		data = [kernel,initrd]
 		
-		localpxe = os.path.join(pxeDit,d,p)
+		localpxe = os.path.join(pxeDir,d,p)
 		
 		f = open(final_config_name,'a')
 		generate_final_menu(f,localpxe,data)
