@@ -1,5 +1,5 @@
 def main_menu():
-	return """DEFAULT vesamenu.c32
+	return """DEFAULT menu.c32
 PROMPT 0
 MENU TITLE Mirror Walker 
 
@@ -15,9 +15,9 @@ LABEL bootlocal
 
 #menu of distributives
 def footer():
-	return """label uplvl
+	return """LABEL uplvl
         MENU LABEL Back
-        KERNEL vesamenu.c32
+        KERNEL menu.c32
         APPEND %s%s\n
 """     
 
@@ -28,12 +28,12 @@ MENU LABEL ^%s
 """
 
 def submenu_value():
-	return """label %s
-	KERNEL vesamenu.c32
+	return """LABEL %s
+	KERNEL menu.c32
  	APPEND %s/%s/%s.conf\n"""
 
-def finalmenu_label():
-	return """label boot
+def finalmenu_LABEL():
+	return """LABEL boot
 	MENU LABEL Boot this\n"""
 
 #with indents
