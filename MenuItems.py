@@ -17,25 +17,24 @@ LABEL bootlocal
 def footer():
 	return """label uplvl
         MENU LABEL Back
-        MENU EXIT
+        KERNEL vesamenu.c32
+        APPEND %s%s\n
 """     
 
 def submenu_header():
 	return """PROMPT 0
 MENU TITLE %s
 MENU LABEL ^%s
-
-TEXT HELP
-	You are in %s 
-ENDTEXT
 """
 
 def submenu_value():
-	return "menu include %s/%s/%s.conf %s\n"
+	return """label %s
+	KERNEL vesamenu.c32
+ 	APPEND %s/%s/%s.conf\n"""
 
 def finalmenu_label():
 	return """label boot
-	MENU LABEL Booth this\n"""
+	MENU LABEL Boot this\n"""
 
 #with indents
 def finalmenu_helper():

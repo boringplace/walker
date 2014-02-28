@@ -20,10 +20,6 @@ class deb_Template(Template_Tester):
 		#when 'current' symlink doesn't convert to 'current' subfolder
 		if (os.path.exists(path)):
 			return 
-		#avoid some bug with inifinite ubuntu subdirs on some mirrors
-		#somehow it's not handeled by .include file when runned in the script
-		#if (p.split('/')[0]=='ubuntu'):
-		#	return
 		os.makedirs(path)
 		self.write_config(url,d,f,pxeDir)
 

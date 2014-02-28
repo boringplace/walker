@@ -17,8 +17,6 @@ def walk(directories,url,urlForConfig,pxedir):
 	for t in threads:	
 		t.join()
 
-
-
 def stepIn(url,urlForConfig,pxedir,d):
 	print ('Checking: '+d)
 	start = timeit.default_timer()
