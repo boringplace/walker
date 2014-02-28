@@ -32,7 +32,7 @@ def submenu_value():
 	KERNEL menu.c32
  	APPEND %s/%s/%s.conf\n"""
 
-def finalmenu_LABEL():
+def finalmenu_label():
 	return """LABEL boot
 	MENU LABEL Boot this\n"""
 
