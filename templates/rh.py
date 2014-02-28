@@ -33,7 +33,7 @@ class rh_Template(Template_Tester):
 		
 		data = [kernel,initrd,append]
 		
-		localpxe = pxeDir+'/'+p
+		localpxe = os.path.join(pxeDir,d,p)
 		
 		f = open(final_config_name,'a')
 		generate_final_menu(f,localpxe,data)
