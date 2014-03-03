@@ -11,7 +11,7 @@ pxedir = 'pxelinux.cfg'
 #mirrors. move to ARGS in future
 url = 'rsync://mirror.yandex.ru/'
 #url = 'rsync://mirrors.kernel.org/'
-#url = 'rsync://mirrors.sgu.ru/'s
+#url = 'rsync://mirrors.sgu.ru/'
 
 if (url[-1] != '/'):
     url += '/'
@@ -26,7 +26,7 @@ if os.path.isdir(pxedir):
 os.mkdir(pxedir)
 
 #check availability via http or ftp
-urlForConfig = exists(url)
+urlForConfig = exists(url, directories)
 
 if urlForConfig:
     #start parallel worker here

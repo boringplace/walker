@@ -10,22 +10,25 @@ responses_ok = {
     204: ('No Content', 'Request fulfilled, nothing follows'),
     205: ('Reset Content', 'Clear input form for further input.'),
     206: ('Partial Content', 'Partial content follows.'),
-    }
+}
 
-def exists(url):    
+
+def exists(url, directories):
     url_resource = url.split('rsync://')[1]
     try:
-        response = urllib.request.urlopen('http://'+url_resource)
+        response = urllib.request.urlopen('http://' + url_resource)
         code = response.getcode()
         if responses_ok[code]:
-            return 'http://'+url_resource 
+            return 'http://' + url_resource
     except urllib.error.HTTPError:
         print("HTTP is not available; trying FTP")
         remote = ftplib.FTP(url_resource)
         remote.login()
         try:
-            remote.cwd(path)
-            return "ftp://" + url_resource 
+            for d in directories:
+                remote.cwd(d)
+                remote.cwd('..')
+            return "ftp://" + url_resource
         except ftplib.error_perm:
             print("sorry, resourcse is not available")
             return False
