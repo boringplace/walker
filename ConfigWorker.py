@@ -25,7 +25,7 @@ def generate_submenu_config(path):
 			f = open(config_path,'a')
 			f.write(submenu_header() % (subdir, subdir))
 			
-			for p in sorted(dirs): #solves problem of randomly sorted results from rsyn
+			for p in sorted(dirs): #solves problem of randomly sorted results from rsync
 			 f.write(submenu_value() % (p,root,p,p.split('/')[-1]))
 
 			

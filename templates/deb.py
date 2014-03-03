@@ -16,8 +16,7 @@ class deb_Template(Template_Tester):
 	def build_directories(self,pxeDir,url,d,f):	
 		p = f.split('images')[0]
 		path = os.path.join(pxeDir,d,p)
-		#avoid some strange thing with debian and part of ubuntu paths
-		#when 'current' symlink doesn't convert to 'current' subfolder
+		#avoid some strange thing with debian and part of ubuntu pathsы
 		if (os.path.exists(path)):
 			return 
 		os.makedirs(path)
