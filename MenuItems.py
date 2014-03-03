@@ -19,7 +19,10 @@ def footer():
     return """LABEL uplvl
         MENU LABEL Back
         KERNEL menu.c32
-        APPEND %s\n
+        APPEND %s
+        TEXT HELP
+            Go back
+        ENDTEXT
 """
 
 
@@ -33,7 +36,7 @@ MENU LABEL ^%s
 def submenu_value():
     return """LABEL %s
     KERNEL menu.c32
-    APPEND %s/%s/%s.conf\n"""
+    APPEND %s\n"""
 
 
 def finalmenu_label():
@@ -41,8 +44,13 @@ def finalmenu_label():
     MENU LABEL Boot this\n"""
 
 
-#with indents
+def submenu_helper():
+    return """\tTEXT HELP
+        Go to this submenu
+        ENDTEXT\n"""
+
+
 def finalmenu_helper():
     return """\tTEXT HELP
-        Selecting this wiil boot image in: %s
+        Selecting this will boot this image
     ENDTEXT\n"""

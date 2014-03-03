@@ -25,6 +25,7 @@ if os.path.isdir(pxedir):
 #creating main pxe directory where files stored
 os.mkdir(pxedir)
 
+pxedir_location = os.path.join(os.getcwd(), pxedir)
 #check availability via http or ftp
 urlForConfig = exists(url, directories)
 
@@ -35,6 +36,6 @@ if urlForConfig:
     #generate final config
     generate_root_config(pxedir)
 
-    print('Mirror walked. Results are in ' + os.getcwd() + '/' + pxedir)
+    print('Mirror walked. Results are in ' + pxedir_location)
 else:
     print("Something went wrong. Walker shattered some glass")
