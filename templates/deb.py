@@ -1,8 +1,8 @@
 from ConfigWorker import *
-from templates.Template_Tester import *
+from templates.Template import *
 import os
 
-class deb_Template(Template_Tester):
+class deb_Template(Template):
 	def __init__(self):
 		self.files = {  r'(.*?)\/images\/netboot\/(.*?)\/linux':0,
 						r'(.*?)\/images\/netboot\/(.*?)\/initrd.gz':0}
@@ -14,13 +14,14 @@ class deb_Template(Template_Tester):
 		return super(deb_Template, self).test_complete()
 
 	def build_directories(self,pxeDir,url,d,f):	
+		
 		p = f.split('images')[0]
 		path = os.path.join(pxeDir,d,p)
-		#avoid some strange thing with debian and part of ubuntu pathsы
+		#avoid some strange thing with debian and part of ubuntu paths
 		if (os.path.exists(path)):
 			return 
 		os.makedirs(path)
-		self.write_config(url,d,f,pxeDir)
+#		self.write_config(url,d,f,pxeDir)
 
 	def write_config(self,url,d,f,pxeDir):
 		p = f.split('images')[0] 

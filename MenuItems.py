@@ -18,7 +18,7 @@ def footer():
 	return """LABEL uplvl
         MENU LABEL Back
         KERNEL menu.c32
-        APPEND %s%s\n
+        APPEND %s\n
 """     
 
 def submenu_header():

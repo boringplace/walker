@@ -1,8 +1,8 @@
 from ConfigWorker import *
-from templates.Template_Tester import *
+from templates.Template import *
 import os
 
-class ISO_Template(Template_Tester):
+class ISO_Template(Template):
 	def __init__(self):
 		self.files = {r'(.*?)\/*.iso$':0 }
 						

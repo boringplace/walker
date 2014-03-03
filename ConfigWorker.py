@@ -18,6 +18,7 @@ def generate_root_config(pxedir):
 #create submenus and its configs to resemble repository view
 def generate_submenu_config(path):
 	for root,dirs,files in os.walk(path):
+
 		#avoid creating files in final directory
 		if find_all_dirs(root):
 			subdir = root.split('/')[-1]
@@ -26,10 +27,8 @@ def generate_submenu_config(path):
 			f.write(submenu_header() % (subdir, subdir))
 			
 			for p in sorted(dirs): #solves problem of randomly sorted results from rsync
-			 f.write(submenu_value() % (p,root,p,p.split('/')[-1]))
+				f.write(submenu_value() % (p,root,p,p.split('/')[-1]))
 
-			
-			f.write(get_footer(root))
 			f.close()
 
 def generate_final_menu(f,p,data):
@@ -38,7 +37,6 @@ def generate_final_menu(f,p,data):
 	for line in data:
 		f.write(line)
 	f.write(finalmenu_helper() %p.split('/')[-2])
-	f.write (footer() % ('/'.join(p.split('/')[:-2])+'/',p.split('/')[-3]+'.conf'))	
 	f.close()
 
 def find_all_dirs(root):
@@ -48,11 +46,20 @@ def find_all_dirs(root):
 			result += 1
 	return result
 
-def get_footer(directory):
-		if len(directory)>2:
-			previous_dir = directory.split('/')[-2]
+def generate_backs(pxedir, distro):
+	
+	for root,dirs,files in os.walk(os.path.join(pxedir,distro)):
+		for f in files: 
+			config = os.path.join(root,f)
 
-			if (previous_dir=='pxelinux.cfg'):
-				return footer() % (previous_dir,'/default')
+			#getting submenu name to check if it is the top level
+			d = config.split('/')[-1].split('.conf')[0]
+			print (d)
+			f = open(config, 'a')
+			
+			if (d == distro):
+				f.write(footer() % (pxedir + '/default'))
 			else:
-				return footer() % ('/'.join(directory.split('/')[:-1])+'/'+'/'.join(directory.split('/')[-2:-1]),'.conf')
+				f.write(footer() % ('/'.join(config.split('/')[:-2]) + '.conf'))
+
+			f.close()

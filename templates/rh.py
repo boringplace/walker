@@ -1,8 +1,8 @@
 from ConfigWorker import *
-from templates.Template_Tester import *
+from templates.Template import *
 import os
 
-class rh_Template(Template_Tester):
+class rh_Template(Template):
 	def __init__(self):
 		self.files = {  r'(.*?)\/images\/pxeboot\/initrd\.img':0,
 						r'(.*?)\/images\/pxeboot\/vmlinuz':0}
@@ -15,8 +15,9 @@ class rh_Template(Template_Tester):
 
 	def build_directories(self,pxeDir,url,d,f):	
 		p = f.split('images')[0]
-		path = os.path.join(pxeDir,d,p)
-		os.makedirs(path)
+		super(rh_Template, self).build_directories(pxeDir,d,p)
+		#path = os.path.join(pxeDir,d,p)
+#		os.makedirs(path)
 		self.write_config(url,d,f,pxeDir)
 
 	def write_config(self,url,d,f,pxeDir):
