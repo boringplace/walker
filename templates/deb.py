@@ -16,9 +16,10 @@ class deb_Template(Template):
 
     def build_directories(self, pxeDir, url, d, f):
         p = f.split('images')[0]
-        super(deb_Template, self).build_directories(pxeDir, d, p)
-        #make abstract and self-called from ParallelWorker
-        self.write_config(url, d, f, pxeDir)
+        if super(deb_Template, self).build_directories(pxeDir, d, p):
+            self.write_config(url, d, f, pxeDir)
+            #make abstract and self-called from ParallelWorker
+
 
     def write_config(self, url, d, f, pxeDir):
         p = f.split('images')[0]
