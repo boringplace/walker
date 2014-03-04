@@ -1,58 +1,84 @@
 import os
-from MenuItems import * #all the displayable data
+#all the displayable data
+from MenuItems import *
+
 
 #create PXE config file for main menu
 def generate_root_config(pxedir):
-	root_dir = os.path.join(os.getcwd(),pxedir)
-	root_file = os.path.join(root_dir,'default')
+    root_dir = os.path.join(os.getcwd(), pxedir)
+    root_file = os.path.join(root_dir, 'default')
 
-	f = open(root_file,'a')
-	f.write(main_menu())
-	
-	#add subdirectories to menu
-	for o in sorted(os.listdir(root_dir)):
-		if os.path.isdir(os.path.join(root_dir,o)):
-			f.write(submenu_value() % (o,pxedir,o,o))
-	f.close()
+    f = open(root_file, 'a')
+    f.write(main_menu())
+
+    #add subdirectories to menu
+    for o in sorted(os.listdir(root_dir)):
+        d = os.path.join(pxedir, o)
+        if (os.path.isdir(d)):
+            value = os.path.join(d, o + '.conf')
+            f.write(submenu_value() % (o, value))
+    f.close()
+
 
 #create submenus and its configs to resemble repository view
 def generate_submenu_config(path):
-	for root,dirs,files in os.walk(path):
-		#avoid creating files in final directory
-		if find_all_dirs(root):
-			subdir = root.split('/')[-1]
-			config_path = root+'/'+subdir+'.conf'
-			f = open(config_path,'a')
-			f.write(submenu_header() % (subdir, subdir))
-			
-			for p in sorted(dirs): #solves problem of randomly sorted results from rsyn
-			 f.write(submenu_value() % (p,root,p,p.split('/')[-1]))
+    for root, dirs, files in os.walk(path):
+        #avoid creating files in final directory
+        if find_all_dirs(root):
+            #the las section name
+            subdir_name = root.split('/')[-1]
+            #this path + this name + .conf
+            config_path = os.path.join(root, subdir_name + '.conf')
 
-			
-			f.write(get_footer(root))
-			f.close()
+            #for ISO compatibility
+            if not os.path.exists(config_path):
+                f = open(config_path, 'a')
+                f.write(submenu_header() % (subdir_name, subdir_name))
+            else:
+                f = open(config_path, 'a')
+            #solves problem of randomly sorted results
+            for p in sorted(dirs):
+                full_p_path = os.path.join(root, p)
+                p_config_file = '/'.join([full_p_path, p + '.conf'])
+                f.write(submenu_value() % (p, p_config_file))
 
-def generate_final_menu(f,p,data):
-	f.write(submenu_header() % (p.split('/')[-2],p.split('/')[-2]))
-	f.write(finalmenu_label())
-	for line in data:
-		f.write(line)
-	f.write(finalmenu_helper() %p.split('/')[-2])
-	f.write (footer() % ('/'.join(p.split('/')[:-2])+'/',p.split('/')[-3]+'.conf'))	
-	f.close()
+            f.close()
+
+
+def generate_final_menu(f, p, data, isNew = True):
+    if isNew:
+        f.write(submenu_header() % (p.split('/')[-2], p.split('/')[-2]))
+    f.write(finalmenu_label())
+    for line in data:
+        f.write(line)
+    f.write(finalmenu_helper())
+    f.close()
+
 
 def find_all_dirs(root):
-	result = 0 
-	for path,dirs,files in os.walk(root):
-		for d in dirs:
-			result += 1
-	return result
+    result = 0
+    for path, dirs, files in os.walk(root):
+        for d in dirs:
+            result += 1
+    return result
 
-def get_footer(directory):
-		if len(directory)>2:
-			previous_dir = directory.split('/')[-2]
 
-			if (previous_dir=='pxelinux.cfg'):
-				return footer() % (previous_dir,'/default')
-			else:
-				return footer() % ('/'.join(directory.split('/')[:-1])+'/'+'/'.join(directory.split('/')[-2:-1]),'.conf')
+def generate_backs(pxedir, distro):
+    for root, dirs, files in os.walk(os.path.join(pxedir, distro)):
+        for f in files:
+            config = os.path.join(root, f)
+
+            #getting submenu name to check if it is the top level
+            d = config.split('/')[-1].split('.conf')[0]
+
+            f = open(config, 'a')
+
+            if (d == distro):
+                f.write(footer() % (pxedir + '/default'))
+            else:
+                config_name = config.split('/')[-3] + '.conf'
+                config_path = '/'.join(config.split('/')[:-2])
+                upper_dir = '/'.join([config_path, config_name])
+                f.write(footer() % upper_dir)
+
+            f.close()
