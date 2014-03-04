@@ -1,5 +1,6 @@
 import shutil
 import os
+import timeit
 
 from ConfigWorker import generate_root_config
 from RSyncWorker import walk_root_directory, walker
@@ -30,12 +31,12 @@ pxedir_location = os.path.join(os.getcwd(), pxedir)
 urlForConfig = exists(url, directories)
 
 if urlForConfig:
+    begin = timeit.default_timer()
     #start parallel worker here
     walk(directories, url, urlForConfig, pxedir)
-
     #generate final config
     generate_root_config(pxedir)
-
-    print('Mirror walked. Results are in ' + pxedir_location)
+    end = timeit.default_timer() - begin
+    print('Mirror walked in %f. Results are in %s' % (end, pxedir_location))
 else:
     print("Something went wrong. Walker shattered some glass")

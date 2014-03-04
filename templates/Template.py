@@ -20,7 +20,5 @@ class Template:
 
     def build_directories(self, pxeDir, distribution, path):
         path = os.path.join(pxeDir, distribution, path)
-        if (os.path.exists(path)):
-            return False
-        os.makedirs(path)
-        return True
+        if not os.path.exists(path):
+            os.makedirs(path)

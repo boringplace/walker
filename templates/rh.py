@@ -37,7 +37,7 @@ class rh_Template(Template):
         data = [kernel, initrd, append]
 
         f = open(final_config_name, 'a')
-        generate_final_menu(f, final_dir, data)
+        generate_final_menu(f, final_dir, data, True)
 
     def reinit(self):
         for key in self.files:

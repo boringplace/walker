@@ -35,7 +35,8 @@ def walk_root_directory(walker):
     return directories
 
 
-def read_contents(walker):   #for recursive walker
+#for recursive walker
+def read_contents(walker):
     result = []
     for line in walker.stdout:
         item = line.strip().split(None, 2)[-1].decode("utf-8")
