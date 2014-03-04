@@ -14,39 +14,31 @@ class ISO_Template(Template):
 		return super(ISO_Template, self).test_complete()
 
 	def build_directories(self,pxeDir,url,d,f):	
-		p = f.split('/')[:-1]
-		path = os.path.join(pxeDir,d,'/'.join(p))
+		final_dir = os.path.join(pxeDir,d,f.split('.iso')[0])		
 		
-		if (os.path.exists(path)):
-			return 
+		final_config_label = final_dir.split('/')[-1] + '.conf'
+		
+		final_config_name = os.path.join(final_dir, final_config_label)
+		
+		web_dest = os.path.join(url,d,f)
 
-		os.makedirs(path)
-		self.write_config(url,d,f,pxeDir)
+		os.makedirs(final_dir)
+		self.write_config(final_dir, final_config_name, web_dest)
 
-	def write_config(self,url,d,f,pxeDir):
+	def write_config(self, final_dir, final_config_name, web_dest):
+		kernel ='\tLINUX memdisk\n'
+		initrd = '\tinitrd %s' % (web_dest + '\n')
+		append = '\tAPPEND iso raw\n'
 		
-		try:
-			last_dir = f.split('/')[-2]
-		except IndexError:
-			pass
-			iso_dir = pxeDir + '/' + d  +'/' +f.split('.iso')[0]		
-			#errrg multithreading sometimes goes wrong
-			if not os.path.exists(iso_dir):
-				os.makedirs(iso_dir)
-			last_dir = f.split('/')[-1]
+		data = [kernel, initrd, append]
+		
+		isNew = False
 
-		config_file = last_dir+'.conf'		
-		final_config_name=os.path.join(pxeDir,d,'/'.join(f.split('/')[:-1]),config_file)
-		
-		kernel ='\tkernel memdisk\n'
-		append = '\tAPPEND iso initrd=' + url + d + '/' + f +'\n'
-		
-		data = [kernel,append]
-		
-		localpxe = pxeDir+'/'+ '/'.join(f.split('/')[:-1])
-		
+		if os.path.exists(final_config_name):
+			isNew = True
+	
 		f = open(final_config_name,'a')
-		generate_final_menu(f,localpxe,data)
+		generate_final_menu(f,final_dir,data, isNew)
 
 	def reinit(self):
 		for key in self.files:

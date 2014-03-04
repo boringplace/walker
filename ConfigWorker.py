@@ -30,9 +30,12 @@ def generate_submenu_config(path):
             #this path + this name + .conf
             config_path = os.path.join(root, subdir_name + '.conf')
 
-            f = open(config_path, 'a')
-            f.write(submenu_header() % (subdir_name, subdir_name))
-
+            #for ISO compatibility
+            if not os.path.exists(config_path):
+                f = open(config_path, 'a')
+                f.write(submenu_header() % (subdir_name, subdir_name))
+            else:
+                f = open(config_path, 'a')
             #solves problem of randomly sorted results
             for p in sorted(dirs):
                 full_p_path = os.path.join(root, p)
@@ -42,8 +45,9 @@ def generate_submenu_config(path):
             f.close()
 
 
-def generate_final_menu(f, p, data):
-    f.write(submenu_header() % (p.split('/')[-2], p.split('/')[-2]))
+def generate_final_menu(f, p, data, isNew = True):
+    if isNew:
+        f.write(submenu_header() % (p.split('/')[-2], p.split('/')[-2]))
     f.write(finalmenu_label())
     for line in data:
         f.write(line)
