@@ -17,24 +17,24 @@ class rh_Template(Template):
     def build_directories(self, pxeDir, url, d, f):
         p = f.split('images')[0]
         super(rh_Template, self).build_directories(pxeDir, d, p)
-        
-        final_dir = os.path.join(pxeDir,d,p)
-        
-        final_config_label = p.split('/')[-2]+'.conf'
-        
-        final_config_name = os.path.join(final_dir,final_config_label)
-        
-        web_dest = os.path.join(url,d,p)
-        
+
+        final_dir = os.path.join(pxeDir, d, p)
+
+        final_config_label = p.split('/')[-2] + '.conf'
+
+        final_config_name = os.path.join(final_dir, final_config_label)
+
+        web_dest = os.path.join(url, d, p)
+
         self.write_config(final_dir, final_config_name, web_dest)
 
     def write_config(self, final_dir, final_config_name, web_dest):
-        kernel = '\tkernel %s' % (os.path.join(web_dest,'images/pxeboot/vmlinuz\n'))
+        kernel = '\tkernel %s' % (os.path.join(web_dest, 'images/pxeboot/vmlinuz\n'))
         initrd = '\tinitrd %s' % (os.path.join(web_dest, 'images/pxeboot/initrd.img\n'))
-        append = '\tAPPEND repo=%s' % (web_dest + '\n') # just coincidence, shouldn't be an example
+        # just coincidence, shouldn't be an example
+        append = '\tAPPEND repo=%s' % (web_dest + '\n')
 
         data = [kernel, initrd, append]
-
 
         f = open(final_config_name, 'a')
         generate_final_menu(f, final_dir, data)
