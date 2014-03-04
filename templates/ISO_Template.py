@@ -26,11 +26,10 @@ class ISO_Template(Template):
 		self.write_config(final_dir, final_config_name, web_dest)
 
 	def write_config(self, final_dir, final_config_name, web_dest):
-		kernel ='\tLINUX memdisk\n'
-		initrd = '\tinitrd %s' % (web_dest + '\n')
-		append = '\tAPPEND iso raw\n'
+		kernel ='\tkernel memdisk\n'
+		iso = '\tAPPEND iso initrd=%s' % (web_dest + '\n')
 		
-		data = [kernel, initrd, append]
+		data = [kernel, iso]
 		
 		isNew = False
 
