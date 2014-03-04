@@ -45,7 +45,7 @@ def generate_submenu_config(path):
             f.close()
 
 
-def generate_final_menu(f, p, data, isNew = True):
+def generate_final_menu(f, p, data, isNew=True):
     if isNew:
         f.write(submenu_header() % (p.split('/')[-2], p.split('/')[-2]))
     f.write(finalmenu_label())

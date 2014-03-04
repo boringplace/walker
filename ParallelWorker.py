@@ -39,7 +39,7 @@ def stepIn(rsync_url, web_url, pxedir, d):
         #check for ISO
         isot.test_file(elem)
         if isot.test_complete():
-            isot.build_directories(pxedir,web_url,d,elem)
+            isot.build_directories(pxedir, web_url, d, elem)
             isot.reinit()
 
     print ('Checked: %s' % d)

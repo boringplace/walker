@@ -2,17 +2,23 @@ import shutil
 import os
 import timeit
 
+from optparse import OptionParser
+
 from ConfigWorker import generate_root_config
 from RSyncWorker import walk_root_directory, walker
 from CheckExists import exists
 from ParallelWorker import walk
 
-pxedir = 'pxelinux.cfg'
+parser = OptionParser()
+parser.add_option('-m', '--mirror', dest='url', help='define mirror, otherwise default used')
+parser.add_option('-p', '--pxedir', dest='pxedir', help='define pxecfg.d, otherwise default used')
+(options, args) = parser.parse_args()
 
-#mirrors. move to ARGS in future
-url = 'rsync://mirror.yandex.ru/'
-#url = 'rsync://mirrors.kernel.org/'
-#url = 'rsync://mirrors.sgu.ru/'
+url = vars(options).get('url')
+pxedir = vars(options).get('pxedir')
+
+url = 'rsync://mirror.yandex.ru/' if url is None else url
+pxedir = 'pxelinux.cfg' if pxedir is None else pxedir
 
 if (url[-1] != '/'):
     url += '/'
