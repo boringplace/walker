@@ -1,4 +1,4 @@
-import urllib.request
+import requests
 import ftplib
 
 responses_ok = {
@@ -16,9 +16,8 @@ responses_ok = {
 def exists(url, directories):
     url_resource = url.split('rsync://')[1]
     try:
-        response = urllib.request.urlopen('http://' + url_resource)
-        code = response.getcode()
-        if responses_ok[code]:
+        response = requests.get('http://' + url_resource)
+        if responses_ok[response.status_code]:
             return 'http://' + url_resource
     except urllib.error.HTTPError:
         print("HTTP is not available; trying FTP")

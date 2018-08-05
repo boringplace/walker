@@ -2,7 +2,7 @@ import os
 import re
 
 
-class Template:
+class Template(object):
     def __init__(self, files):
         self.files = files
 
