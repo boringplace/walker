@@ -47,6 +47,9 @@ LABEL debian
 LABEL debian-cd
     KERNEL menu.c32
     APPEND pxelinux.cfg/debian-cd/debian-cd.conf
+LABEL elrepo
+    KERNEL menu.c32
+    APPEND pxelinux.cfg/elrepo/elrepo.conf
 LABEL fedora
     KERNEL menu.c32
     APPEND pxelinux.cfg/fedora/fedora.conf
@@ -80,6 +83,9 @@ LABEL libreoffice
 LABEL linuxmint
     KERNEL menu.c32
     APPEND pxelinux.cfg/linuxmint/linuxmint.conf
+LABEL macports
+    KERNEL menu.c32
+    APPEND pxelinux.cfg/macports/macports.conf
 LABEL mageia
     KERNEL menu.c32
     APPEND pxelinux.cfg/mageia/mageia.conf
